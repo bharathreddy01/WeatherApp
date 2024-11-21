@@ -43,39 +43,4 @@ API Integration
 Weather API
 The application uses a weather API to fetch real-time weather data. Key details:
 
-Base URL: https://api.weatherapi.com/
-Endpoints:
-/v1/current.json: Fetch current weather details.
-API Key: Must be securely stored and accessed via a configuration file.
-Folder Structure
-plaintext
-Copy code
-WeatherApplication/
-├── app/
-│   ├── src/
-│   │   ├── main/
-│   │   │   ├── java/com/example/weatherapplication/
-│   │   │   │   ├── di/               # Dependency Injection
-│   │   │   │   ├── ui/theme/         # Theme and UI
-│   │   │   │   ├── network/          # Retrofit and API service
-│   │   │   │   ├── Repository/       # Repository for data handling
-│   │   │   │   ├── ViewModel/        # ViewModel classes
-│   │   │   │   ├── MainActivity.kt   # Entry point of the app
-│   │   │   │   ├── WeatherApplication.kt # Application class
-│   │   ├── res/                      # XML resources
-│   ├── build.gradle                  # Module-level Gradle file
-├── build.gradle                      # Project-level Gradle file
-├── settings.gradle                   # Project settings
-How It Works
-Application Launch:
 
-The app initializes with WeatherApplication.kt using Hilt for dependency injection.
-MainActivity observes WeatherViewModel for weather state updates.
-Data Flow:
-
-ViewModel triggers API calls through WeatherRepository.
-Retrofit fetches data from the weather API.
-The parsed response is sent back to the WeatherViewModel.
-The UI observes StateFlow updates and renders accordingly.
-evious weather data for offline viewing.
-Notifications: Push weather alerts or updates.
