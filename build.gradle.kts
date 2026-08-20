@@ -1,15 +1,10 @@
-buildscript {
-    repositories {
-        google() // Required for Android Gradle Plugin
-        mavenCentral() // Required for Kotlin and Hilt Plugins
-    }
-    dependencies {
-        classpath("com.android.tools.build:gradle:8.6.1") // Android Gradle Plugin
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.10") // Kotlin Plugin
-        classpath("com.google.dagger:hilt-android-gradle-plugin:2.48") // Hilt Plugin
-    }
+// Top-level build file. Plugin versions live here so the :app module can apply them.
+plugins {
+    id("com.android.application") version "8.6.1" apply false
+    id("org.jetbrains.kotlin.android") version "1.9.10" apply false
+    id("com.google.dagger.hilt.android") version "2.48" apply false
 }
 
 tasks.register("clean", Delete::class) {
-    delete(rootProject.buildDir)
+    delete(rootProject.layout.buildDirectory)
 }

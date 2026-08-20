@@ -1,0 +1,4 @@
+## OpenWeatherMap API key (required)
+
+sdk.dir=/Users/YOU/Library/Android/sdk
+OPENWEATHER_API_KEY=paste_your_key_here

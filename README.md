@@ -1,46 +1,52 @@
-Weather Application
-Overview
-The Weather Application is a feature-rich and intuitive Android application that provides users with real-time weather updates. Built with Kotlin, Jetpack Compose, and Hilt, this application integrates with a robust weather API to fetch and display accurate weather details for any location. The application also follows modern Android development best practices, including MVVM architecture, reactive programming with Kotlin Flows, and dependency injection using Hilt.
+# Weather Application
 
-Features
-Real-Time Weather Updates: Displays the current temperature, weather conditions, and detailed descriptions.
-Error Handling: Comprehensive error screens for network failures or API issues.
-Retry Mechanism: Allows users to refresh and fetch weather updates seamlessly.
-Clean UI: A user-centric design powered by Jetpack Compose ensures a fluid and modern UI experience.
-Offline-Ready: Graceful handling of offline scenarios with meaningful feedback.
-Architecture: Utilizes MVVM architecture for separation of concerns and maintainability.
-Technology Stack
-Programming Language: Kotlin
-Architecture: MVVM (Model-View-ViewModel)
-UI Framework: Jetpack Compose
-Dependency Injection: Hilt (Dagger)
-Networking: Retrofit with GSON for JSON parsing
-Coroutines: For asynchronous operations
-State Management: Kotlin Flows and MutableStateFlows
-Modules
+Android weather app (Kotlin) that looks up current conditions for US cities via
+[OpenWeatherMap](https://openweathermap.org/).
 
-1. UI Layer
-MainActivity: Entry point of the application. Handles navigation between different states like loading, success, and error.
-WeatherScreen: Displays weather details including temperature and description.
-ErrorScreen: Handles error scenarios like network failures or API errors, providing a retry mechanism.
+## Features
 
-3. ViewModel Layer
-WeatherViewModel:
-Manages app logic and state.
-Fetches weather data asynchronously using Coroutines.
-Exposes weather state as a StateFlow to the UI.
+- Search by US city name
+- Current temperature, feels-like, high/low, humidity, pressure, wind, and condition text
+- Weather icon from OpenWeather (cached by Coil)
+- Requests location permission on launch; if granted, loads weather for the device location
+- Remembers the last successful city and auto-loads it when location is unavailable
+- MVVM + Hilt + Retrofit + Coroutines + Jetpack Compose
+- JUnit unit tests for mapper, repository, and ViewModel
 
-5. Data Layer
-Repository: Acts as a single source of truth for fetching data from the API.
-API Service: Defines endpoints for the weather API.
-RetrofitInstance: Configures the Retrofit client.
+## Setup
 
-7. Dependency Injection
-AppModule:
-Provides instances of Retrofit, WeatherApiService, and WeatherRepository.
-Ensures Singleton instances across the app lifecycle.
-API Integration
-Weather API
-The application uses a weather API to fetch real-time weather data. Key details:
+1. Create a free API key at [openweathermap.org](https://openweathermap.org/api).
+2. Add the key to `local.properties` in the project root (this file is gitignored):
 
+```properties
+OPENWEATHER_API_KEY=your_api_key_here
+sdk.dir=/path/to/Android/sdk
+```
 
+3. Use **JDK 17** (required for the current Kotlin/Hilt/kapt toolchain).
+4. Open the project in Android Studio and run the `app` configuration.
+
+> New OpenWeather keys can take a short time to activate after signup.
+
+## Architecture
+
+| Layer | Responsibility |
+| --- | --- |
+| UI (`ui/weather`) | Compose screens + `WeatherViewModel` state |
+| Domain/data models | `WeatherInfo` independent of JSON |
+| Repository | API calls, error mapping, last-city persistence |
+| Remote | Retrofit service + DTOs + mapper |
+| Location | Fused Location wrapper behind `LocationProvider` |
+| DI | Hilt modules bind interfaces and provide Retrofit |
+
+## Run unit tests
+
+```bash
+./gradlew :app:testDebugUnitTest
+```
+
+## Notes
+
+- City search uses `q={city},US` (challenge-allowed city-name endpoint). Location uses `lat` / `lon`.
+- Units are imperial (°F, mph) for a US-focused search experience.
+- If `OPENWEATHER_API_KEY` is missing, the UI shows a clear setup message instead of failing silently.
